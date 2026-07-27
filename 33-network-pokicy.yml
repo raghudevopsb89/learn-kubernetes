@@ -89,9 +89,7 @@ metadata:
   name: app-np-allow-complete-ns
   namespace: app
 spec:
-  podSelector:
-    matchLabels:
-      appType: app
+  podSelector: {}
   policyTypes:
   - Ingress
   - Egress
