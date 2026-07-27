@@ -83,14 +83,41 @@ spec:
     - name: debug
       image: rkalluru/learnk8s:rhel9-bare
 ---
+# apiVersion: networking.k8s.io/v1
+# kind: NetworkPolicy
+# metadata:
+#   name: app-np-allow-complete-ns
+#   namespace: app
+# spec:
+#   podSelector: {}
+#   policyTypes:
+#   - Ingress
+#   - Egress
+
+---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
   name: app-np-allow-complete-ns
   namespace: app
 spec:
-  podSelector: {}
+  podSelector:
+    matchLabels:
+      appType: app
   policyTypes:
   - Ingress
   - Egress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          ns: web
+      podSelector:
+        matchLabels:
+          appType: web
+    ports:
+    - protocol: TCP
+      port: 80
+  egress:
+    - {}
 
